@@ -1,15 +1,15 @@
 const fs = require('fs');
 const { mkdir, readdir, copyFile } = require('fs').promises;
 const path = require('path');
-
+const pathToFolder = path.join(__dirname, 'project-dist');
 async function makeDir() {
   try {
     console.log('create directory project-dist...');
     console.log('---------------------------');
-    await mkdir(path.join(__dirname, 'project-dist'), { recursive: true });
+    await mkdir(pathToFolder, { recursive: true });
     console.log('create directory assets...');
     console.log('---------------------------');
-    await mkdir(path.join(__dirname, 'project-dist\\assets'), {
+    await mkdir(path.join(pathToFolder, 'assets'), {
       recursive: true,
     });
   } catch (err) {
@@ -21,12 +21,12 @@ async function makeFile() {
   try {
     console.log('create file style.css...');
     console.log('---------------------------');
-    await fs.appendFile(path.join(__dirname, '/project-dist/style.css'), '', function (err) {
+    await fs.appendFile(path.join(pathToFolder, 'style.css'), '', function (err) {
       if (err) throw err;
     });
     console.log('create file index.html...');
     console.log('---------------------------');
-    await fs.appendFile(path.join(__dirname, '/project-dist/index.html'), '', function (err) {
+    await fs.appendFile(path.join(pathToFolder, 'index.html'), '', function (err) {
       if (err) throw err;
     });
   } catch (err) {
@@ -37,9 +37,9 @@ async function makeFile() {
 async function getDataToCss() {
   try {
     const data = [];
-    const pathToFiles = path.join(__dirname, 'styles\\');
+    const pathToFiles = path.join(__dirname, 'styles');
 
-    const writeableStream = fs.createWriteStream(path.join(__dirname, '/project-dist/style.css'));
+    const writeableStream = fs.createWriteStream(path.join(pathToFolder, 'style.css'));
     const files = await readdir(pathToFiles, {
       withFileTypes: true,
     });
@@ -97,17 +97,17 @@ async function getDataToHtml() {
 
 async function copyFiles() {
   try {
-    const pathToFiles = path.join(__dirname, 'assets\\');
-    const pathToFilesCopy = path.join(__dirname, 'project-dist\\assets\\');
+    const pathToFiles = path.join(__dirname, 'assets');
+    const pathToFilesCopy = path.join(pathToFolder, 'assets');
     const folders = await readdir(pathToFiles);
     for (const folder of folders) {
-      const pathToFolder = pathToFiles + folder + '\\';
-      const pathToFolderCopy = pathToFilesCopy + folder + '\\';
+      const pathToFolder = path.join(pathToFiles, folder);
+      const pathToFolderCopy = path.join(pathToFilesCopy, folder);
       await mkdir(pathToFolderCopy, { recursive: true });
       const files = await readdir(pathToFolder);
       for (const file of files) {
-        const pathToFile = pathToFolder + file;
-        const pathToFileCopy = pathToFolderCopy + file;
+        const pathToFile = path.join(pathToFolder, file);
+        const pathToFileCopy = path.join(pathToFolderCopy, file);
         await copyFile(pathToFile, pathToFileCopy);
         console.log('copying file:', file);
         console.log('---------------------------');
