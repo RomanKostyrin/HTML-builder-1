@@ -19,13 +19,13 @@ async function makeDir() {
 
 async function makeFile() {
   try {
-    console.log(chalk.blue('create file style.css...'));
-    console.log(chalk.blue('---------------------------'));
+    console.log('create file style.css...');
+    console.log('---------------------------');
     await fs.appendFile(path.join(__dirname, '/project-dist/style.css'), '', function (err) {
       if (err) throw err;
     });
-    console.log(chalk.blue('create file index.html...'));
-    console.log(chalk.blue('---------------------------'));
+    console.log('create file index.html...');
+    console.log('---------------------------');
     await fs.appendFile(path.join(__dirname, '/project-dist/index.html'), '', function (err) {
       if (err) throw err;
     });
@@ -56,7 +56,7 @@ async function getDataToCss() {
     for (const row of data) {
       writeableStream.write(row);
     }
-    console.log(chalk.green('DONE!!!'));
+    console.log('DONE!!!');
   } catch (err) {
     console.error(err);
   }
