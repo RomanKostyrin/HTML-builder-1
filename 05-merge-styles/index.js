@@ -6,14 +6,14 @@ const pathToFolder = path.join(__dirname, 'project-dist');
 async function getData() {
   try {
     const data = [];
-    const pathToFiles = path.join(__dirname, 'styles\\');
+    const pathToFiles = path.join(__dirname, 'styles');
 
-    const writeableStream = fs.createWriteStream(path.join(__dirname, '/project-dist/bundle.css'));
+    const writeableStream = fs.createWriteStream(path.join(pathToFolder, 'bundle.css'));
     const files = await readdir(pathToFiles, {
       withFileTypes: true,
     });
     for (const file of files) {
-      const pathToFile = pathToFiles + file.name;
+      const pathToFile = path.join(pathToFiles, file.name);
       const readableStream = fs.createReadStream(pathToFile, 'utf8');
       const f = path.parse(pathToFile);
       if (file.isFile() && f.ext.slice(1) === 'css') {
