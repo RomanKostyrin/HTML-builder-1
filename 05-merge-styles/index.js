@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { mkdir, readdir } = require('fs').promises;
 const path = require('path');
+const pathToFolder = path.join(__dirname, 'project-dist');
 
 async function getData() {
   try {
@@ -33,7 +34,7 @@ async function makeDir() {
   try {
     console.log('create directory project-dist...');
     console.log('---------------------------');
-    await mkdir(path.join(__dirname, 'project-dist'), { recursive: true });
+    await mkdir(pathToFolder, { recursive: true });
   } catch (err) {
     console.error(err);
   }
@@ -43,7 +44,7 @@ async function makeFile() {
   try {
     console.log('create file bundle.css...');
     console.log('---------------------------');
-    fs.appendFile(path.join(__dirname, '/project-dist/bundle.css'), '', function (err) {
+    fs.appendFile(path.join(pathToFolder, 'bundle.css'), '', function (err) {
       if (err) throw err;
     });
   } catch (err) {
