@@ -44,7 +44,7 @@ async function getDataToCss() {
       withFileTypes: true,
     });
     for (const file of files) {
-      const pathToFile = pathToFiles + file.name;
+      const pathToFile = path.join(pathToFiles, file.name);
       const readableStream = fs.createReadStream(pathToFile, 'utf8');
       const f = path.parse(pathToFile);
       if (file.isFile() && f.ext.slice(1) === 'css') {
@@ -65,7 +65,7 @@ async function getDataToCss() {
 async function getDataToHtml() {
   try {
     let data = '';
-    const pathToFiles = path.join(__dirname, 'components\\');
+    const pathToFiles = path.join(__dirname, 'components');
 
     const pathToFile = path.join(__dirname, 'template.html');
     const readableHtmlStream = fs.createReadStream(pathToFile, 'utf8');
@@ -73,13 +73,13 @@ async function getDataToHtml() {
       data += chunk;
     }
 
-    const writeableStream = fs.createWriteStream(path.join(__dirname, '/project-dist/index.html'));
+    const writeableStream = fs.createWriteStream(path.join(pathToFolder, 'index.html'));
     const files = await readdir(pathToFiles, {
       withFileTypes: true,
     });
     for (const file of files) {
       let fileData = '';
-      const pathToFile = pathToFiles + file.name;
+      const pathToFile = path.join(pathToFiles, file.name);
       const readableStream = fs.createReadStream(pathToFile, 'utf8');
       const f = path.parse(pathToFile);
       if (file.isFile() && f.ext.slice(1) === 'html') {
